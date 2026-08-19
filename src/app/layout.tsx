@@ -3,7 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
-import { siteConfig, ui } from "@/data/content";
+import { projectImages, siteConfig, ui } from "@/data/content";
 import "./globals.css";
 
 const inter = Inter({
@@ -19,6 +19,10 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(siteConfig.url),
+  alternates: {
+    canonical: "/",
+  },
   title: {
     default: `${siteConfig.name} | ${ui.metaTitle}`,
     template: `%s | ${siteConfig.name}`,
@@ -33,6 +37,9 @@ export const metadata: Metadata = {
     "montim dritaresh",
     "dritare evropiane",
     "NIDI Plast",
+    "Nidiplast",
+    "Nidiplast Rahovec",
+    "dritare Rahovec",
   ],
   authors: [{ name: siteConfig.name }],
   openGraph: {
@@ -40,12 +47,32 @@ export const metadata: Metadata = {
     locale: siteConfig.locale,
     url: siteConfig.url,
     siteName: siteConfig.name,
-    title: siteConfig.tagline,
+    title: `${siteConfig.name} | ${siteConfig.tagline}`,
     description: siteConfig.description,
+    images: [
+      {
+        url: projectImages.hero,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${siteConfig.name} | ${siteConfig.tagline}`,
+    description: siteConfig.description,
+    images: [projectImages.hero],
   },
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   icons: {
     icon: "/logo.png",
@@ -55,17 +82,48 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "HomeAndConstructionBusiness",
+  "@id": `${siteConfig.url}/#business`,
   name: siteConfig.name,
+  alternateName: ["Nidiplast", "NIDI Plast Rahovec"],
   description: siteConfig.description,
   url: siteConfig.url,
+  logo: `${siteConfig.url}/logo.png`,
+  image: `${siteConfig.url}${projectImages.hero}`,
   telephone: siteConfig.contact.phone,
   email: siteConfig.contact.email,
   address: {
     "@type": "PostalAddress",
-    streetAddress: siteConfig.contact.address,
+    streetAddress: "Rr. Xhelal Hajda Toni",
+    addressLocality: "Rahovec",
+    postalCode: "21000",
+    addressCountry: "XK",
   },
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 42.393889,
+    longitude: 20.648056,
+  },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+      ],
+      opens: "08:00",
+      closes: "17:00",
+    },
+  ],
+  sameAs: [
+    siteConfig.social.facebook,
+    siteConfig.social.instagram,
+    siteConfig.social.google,
+  ],
   areaServed: "Evropa",
-  priceRange: "$$$",
+  priceRange: "$$",
 };
 
 export default function RootLayout({
